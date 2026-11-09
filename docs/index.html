@@ -3,33 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Portfólio de Luiz Otávio — projetos de inteligência artificial, automação e MarTech.">
-    <meta name="theme-color" content="#000000">
-    <meta property="og:title" content="Luiz Otávio — IA, Automação e MarTech">
-    <meta property="og:description" content="Projetos reais, aprendizados documentados e soluções digitais construídas na prática.">
+    <meta name="theme-color" content="#08070a">
+    <meta name="description" content="Portfólio de Luiz Otávio, Analista de MarTech e IA. Projetos de automação, dados, inteligência comercial e desenvolvimento web.">
+    <meta property="og:title" content="Luiz Otávio — Portfólio de MarTech e IA">
+    <meta property="og:description" content="Projetos de automação, dados, inteligência comercial e desenvolvimento web.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://avatars.githubusercontent.com/u/138683979?v=4">
-    <title>Luiz Otávio — Portfólio</title>
+    <meta property="og:image" content="https://luizott.github.io/Meu-Portifolio/assets/luiz-otavio.jpg">
+    <link rel="canonical" href="https://luizott.github.io/Meu-Portifolio/">
+    <title>Luiz Otávio — Portfólio de MarTech e IA</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css?v=2026-11">
+    <script src="content.js?v=2026-11" defer></script>
+    <script src="script.js?v=2026-11" defer></script>
   </head>
   <body>
     <div class="cursor-glow" aria-hidden="true"></div>
     <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
-
     <header class="site-header">
       <nav class="nav container" aria-label="Navegação principal">
-        <a class="brand" href="#inicio" aria-label="Início do portfólio">
-          <span class="brand-dot" aria-hidden="true"></span>
-          <span>Luiz Otávio</span>
-        </a>
-
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
-          <span class="sr-only">Abrir menu</span>
-          <span></span><span></span><span></span>
-        </button>
-
+        <a class="brand" href="#inicio">Luiz Otávio<span aria-hidden="true">.</span></a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" hidden>Menu</button>
         <div class="nav-links" id="nav-links">
           <a href="#sobre">Sobre</a>
           <a href="#projetos">Projetos</a>
@@ -38,212 +31,115 @@
         </div>
       </nav>
     </header>
-
-    <main id="conteudo">
-      <section class="hero" id="inicio">
+    <main id="conteudo" tabindex="-1">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
         <div class="container hero-grid">
-          <div class="hero-copy reveal">
-            <span class="hero-kicker">Portfólio pessoal · 2026</span>
-            <h1>Aplicando <span>IA e tecnologia</span> na prática.</h1>
-            <p class="hero-lead">Aprendendo, construindo e compartilhando projetos reais em IA, automação e MarTech.</p>
-
+          <div class="hero-copy">
+            <p class="eyebrow">Portfólio profissional</p>
+            <h1 id="hero-title">Conectando negócios, <em>IA e tecnologia</em> para resolver problemas reais.</h1>
+            <p class="hero-lead">Bacharel em Administração pela UFV, técnico em Informática e Analista de MarTech e IA. Desenvolvo soluções que simplificam processos, organizam dados e tornam operações mais eficientes.</p>
             <div class="hero-actions">
               <a class="button button-primary" href="#projetos">Explorar projetos <span aria-hidden="true">↓</span></a>
-              <a class="button button-secondary" href="https://github.com/LuizOtt" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-            </div>
-
-            <div class="social-row" aria-label="Redes sociais">
-              <a class="social-icon" href="https://www.linkedin.com/in/luizotavioadm" target="_blank" rel="noreferrer" aria-label="Abrir LinkedIn de Luiz Otávio">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V8.98h3.42v1.57h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.29ZM5.32 7.41a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.04H3.54V8.98H7.1v11.47Z"/></svg>
-                <span>LinkedIn</span>
-              </a>
-              <a class="social-icon" href="https://www.tiktok.com/@luizotavio.tech" target="_blank" rel="noreferrer" aria-label="Abrir TikTok de Luiz Otávio">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.21v12.9a2.7 2.7 0 1 1-2.7-2.7c.28 0 .55.04.81.12v-3.28a6 6 0 1 0 5.1 5.86V9.36a7.5 7.5 0 0 0 4.38 1.4V7.55a4.3 4.3 0 0 1-3.32-1.73Z"/></svg>
-                <span>TikTok</span>
-              </a>
             </div>
           </div>
-
-          <div class="badge-stage reveal" id="badge-stage" aria-label="Crachá interativo de Luiz Otávio. Arraste para balançar.">
-            <div class="badge-strap badge-strap-left" aria-hidden="true"><span></span></div>
-            <div class="badge-strap badge-strap-right" aria-hidden="true"><span></span></div>
-
-            <div class="badge-shell" id="draggable-badge" tabindex="0" role="img" aria-label="Luiz Otávio, administrador. IA aplicada, automação e MarTech. Crachá interativo.">
-              <div class="badge-clips" aria-hidden="true">
-                <span class="badge-clip badge-clip-left"></span>
-                <span class="badge-clip badge-clip-right"></span>
-              </div>
-              <article class="identity-badge">
-                <span class="badge-label">PORTFÓLIO PESSOAL</span>
-                <div class="badge-photo">
-                  <img src="https://avatars.githubusercontent.com/u/138683979?v=4" alt="Luiz Otávio" width="180" height="210">
-                </div>
-                <div class="badge-copy">
-                  <h2>Luiz Otávio</h2>
-                  <p>Administrador</p>
-                  <div class="badge-keywords" aria-label="Áreas de atuação">
-                    <span>IA aplicada</span><span>Automação</span><span>MarTech</span>
-                  </div>
-                </div>
-                <span class="badge-hint">arraste o crachá</span>
+          <div class="badge-stage">
+            <svg class="lanyard" viewBox="0 0 270 180" aria-hidden="true">
+              <defs>
+                <linearGradient id="ribbon" x2="1" y2=".3" gradientUnits="objectBoundingBox">
+                  <stop stop-color="#292038"/><stop offset=".48" stop-color="#694d95"/><stop offset="1" stop-color="#332447"/>
+                </linearGradient>
+                <pattern id="weave" width="3" height="4" patternUnits="userSpaceOnUse">
+                  <path d="M0 1h3m-2 2h2" stroke="#e5cfff" stroke-opacity=".19" stroke-width=".6"/>
+                </pattern>
+                <linearGradient id="metal">
+                  <stop stop-color="#55515c"/><stop offset=".43" stop-color="#ebe7ee"/><stop offset="1" stop-color="#706878"/>
+                </linearGradient>
+                <path id="fabric" d="M44-10h22c16 49 33 94 69 143 26-40 46-91 60-143h23c-18 63-39 111-69 156-5 8-12 13-16 15l-15-10C84 103 60 44 44-10Z"/>
+              </defs>
+              <use href="#fabric" fill="url(#ribbon)" stroke="#9274ba" stroke-opacity=".5"/>
+              <use href="#fabric" fill="url(#weave)"/>
+              <path d="M132 134c-4 7-8 12-14 17" fill="none" stroke="#291b3d" stroke-width="1.7" opacity=".75"/>
+              <rect x="124" y="139" width="22" height="18" rx="4" fill="#302738" stroke="#8c789f"/>
+              <circle cx="135" cy="161" r="6" fill="#141017" stroke="url(#metal)" stroke-width="2.5"/>
+              <rect x="130" y="165" width="10" height="15" rx="4" fill="url(#metal)" stroke="#433d4a"/>
+              <path d="M137 168v7" stroke="#4f4755" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div class="badge-pivot">
+              <div class="badge-eyelet" aria-hidden="true"></div>
+              <article class="identity-badge" aria-label="Identificação profissional">
+                <img class="badge-photo" src="assets/luiz-otavio.jpg" width="460" height="460" alt="Retrato de Luiz Otávio" fetchpriority="high">
+                <p class="badge-name">Luiz Otávio</p>
+                <p class="badge-role">Analista de MarTech e IA</p>
+                <p class="badge-degree">Administração — UFV</p>
+                <ul class="badge-keywords" aria-label="Especialidades"><li>IA aplicada</li><li>Automação</li><li>Dados</li></ul>
               </article>
+              <button class="badge-control" type="button" aria-label="Balançar o crachá" title="Balançar o crachá" hidden></button>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section about-section" id="sobre">
-        <div class="container about-layout">
-          <div class="about-intro reveal">
-            <span class="section-label">Sobre mim</span>
-            <h2>Administrador que usa tecnologia para resolver problemas reais.</h2>
-          </div>
-
-          <div class="about-story reveal">
-            <p class="about-lead">Exploro inteligência artificial, automação e dados para transformar processos manuais em soluções mais simples, visíveis e eficientes.</p>
-            <p>Meu portfólio reúne projetos construídos enquanto aprendo: sites, dashboards, sistemas internos, agentes de IA e ferramentas comerciais. Cada trabalho registra o problema, as escolhas e o que foi colocado em prática.</p>
-
-            <div class="about-focus">
-              <div><span>Foco atual</span><strong>IA aplicada e automação</strong></div>
-              <div><span>Formação</span><strong>Administração</strong></div>
-              <div><span>Interesse</span><strong>MarTech e operações</strong></div>
-              <div><span>Forma de aprender</span><strong>Construindo projetos reais</strong></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section project-section" id="projetos">
+      <section class="section" id="sobre" aria-labelledby="about-title">
         <div class="container">
-          <div class="project-heading reveal">
-            <div>
-              <span class="section-label">Projetos selecionados</span>
-              <h2>Soluções digitais construídas na prática.</h2>
-            </div>
-            <p>Use as setas, os indicadores ou arraste horizontalmente para conhecer cada projeto.</p>
+          <div class="section-heading about-heading">
+            <div><p class="eyebrow">Sobre mim</p><h2 id="about-title">Da análise do problema à solução em uso.</h2></div>
+            <p>Trabalho na interseção entre marketing, operações e tecnologia. Meu ponto de partida é entender a rotina de quem vai usar a solução; a partir daí, escolho o que vale automatizar e quais dados ajudam a tomar decisões.</p>
           </div>
-
-          <div class="project-carousel reveal" aria-roledescription="carrossel" aria-label="Projetos de Luiz Otávio">
-            <div class="carousel-viewport">
-              <div class="project-track">
-                <article class="project-slide" aria-label="1 de 4 — Site da Rotom Soluções">
-                  <div class="project-media">
-                    <img src="assets/projects/rotom-site.png" alt="Página inicial do site da Rotom Soluções" width="1580" height="881">
-                    <span class="project-badge public">Projeto público</span>
-                  </div>
-                  <div class="project-info">
-                    <span class="project-index">01 · Web</span>
-                    <h3>Site da Rotom Soluções</h3>
-                    <p>Site institucional responsivo para apresentar serviços, organizar a proposta da empresa e conduzir o visitante até o orçamento.</p>
-                    <div class="project-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>IA aplicada</span></div>
-                    <a class="project-link" href="https://rotomsolucoes.vercel.app/" target="_blank" rel="noreferrer">Abrir projeto <span aria-hidden="true">↗</span></a>
-                  </div>
-                </article>
-
-                <article class="project-slide" aria-label="2 de 4 — Sistema de gestão de eventos">
-                  <div class="project-media">
-                    <img src="assets/projects/nexo-events.png" alt="Demonstração fictícia de um sistema de gestão de eventos" width="1672" height="941">
-                    <span class="project-badge demo">Case anonimizado · dados fictícios</span>
-                  </div>
-                  <div class="project-info">
-                    <span class="project-index">02 · Operações</span>
-                    <h3>Sistema de gestão de eventos</h3>
-                    <p>Dashboard para acompanhar planejamento, responsáveis, prazos, alertas, orçamento e andamento dos eventos em uma única visão.</p>
-                    <div class="project-tags"><span>Dashboard</span><span>Automação</span><span>Gestão</span><span>Dados</span></div>
-                    <span class="project-note">Interface pública recriada; nenhuma informação da empresa foi utilizada.</span>
-                  </div>
-                </article>
-
-                <article class="project-slide" aria-label="3 de 4 — Painel de performance de marketing">
-                  <div class="project-media">
-                    <img src="assets/projects/pulse-metrics.png" alt="Demonstração fictícia de um painel de indicadores de marketing" width="1672" height="941">
-                    <span class="project-badge demo">Case anonimizado · dados fictícios</span>
-                  </div>
-                  <div class="project-info">
-                    <span class="project-index">03 · MarTech</span>
-                    <h3>Painel de performance de marketing</h3>
-                    <p>Visão consolidada de indicadores do site, aquisição e geração de contatos para acompanhar a evolução e apoiar decisões.</p>
-                    <div class="project-tags"><span>KPIs</span><span>MarTech</span><span>APIs</span><span>Integrações</span></div>
-                    <span class="project-note">Layout, datas e indicadores recriados exclusivamente para demonstração.</span>
-                  </div>
-                </article>
-
-                <article class="project-slide" aria-label="4 de 4 — Plataforma de inteligência comercial">
-                  <div class="project-media">
-                    <img src="assets/projects/b2b-original.jpg" alt="Plataforma de inteligência comercial B2B" width="1280" height="853">
-                    <span class="project-badge public">Projeto autoral</span>
-                  </div>
-                  <div class="project-info">
-                    <span class="project-index">04 · Comercial</span>
-                    <h3>Plataforma de inteligência comercial B2B</h3>
-                    <p>Ferramenta para pesquisar mercados, encontrar empresas, estruturar contatos e apoiar a identificação de potenciais decisores.</p>
-                    <div class="project-tags"><span>Python</span><span>APIs</span><span>Automação</span><span>Prospecção</span></div>
-                    <span class="project-note">Interface original do projeto de prospecção comercial.</span>
-                  </div>
-                </article>
-              </div>
-            </div>
-
-            <div class="carousel-controls">
-              <div class="carousel-dots" role="tablist" aria-label="Selecionar projeto">
-                <button class="carousel-dot is-active" type="button" aria-label="Mostrar projeto 1" aria-selected="true"></button>
-                <button class="carousel-dot" type="button" aria-label="Mostrar projeto 2" aria-selected="false"></button>
-                <button class="carousel-dot" type="button" aria-label="Mostrar projeto 3" aria-selected="false"></button>
-                <button class="carousel-dot" type="button" aria-label="Mostrar projeto 4" aria-selected="false"></button>
-              </div>
-              <div class="carousel-arrows">
-                <button class="carousel-arrow carousel-prev" type="button" aria-label="Projeto anterior">←</button>
-                <button class="carousel-arrow carousel-next" type="button" aria-label="Próximo projeto">→</button>
-              </div>
-            </div>
+          <div class="trajectory" aria-label="Trajetória profissional e formação">
+            <article><p class="eyebrow">Atuação atual</p><h3>MarTech e IA</h3><p>Automação de processos, integração por APIs, CRM, fluxos com n8n, análise de indicadores e aplicações práticas de IA.</p></article>
+            <article><p class="eyebrow">Experiência</p><h3>Inteligência Comercial B2B</h3><p>Pesquisa de mercado, prospecção, qualificação de contatos e enriquecimento de dados para apoiar a operação comercial.</p></article>
+            <article><p class="eyebrow">Formação</p><h3>Administração e Informática</h3><p>Bacharel em Administração pela Universidade Federal de Viçosa (UFV) e técnico em Informática.</p></article>
           </div>
         </div>
       </section>
 
-      <section class="section stack-section" id="stack">
+      <section class="section projects-section" id="projetos" aria-labelledby="projects-title">
         <div class="container">
-          <div class="stack-heading reveal">
-            <span class="section-label">Tecnologias e ferramentas</span>
-            <h2>O que uso para transformar ideias em projetos.</h2>
+          <div class="section-heading">
+            <div><p class="eyebrow">Projetos selecionados</p><h2 id="projects-title">Soluções digitais construídas na prática.</h2></div>
+            <div class="carousel-controls" aria-label="Controles dos projetos" hidden>
+              <button class="icon-button" type="button" data-carousel="previous" aria-controls="project-list" aria-label="Projeto anterior">←</button>
+              <button class="icon-button" type="button" data-carousel="next" aria-controls="project-list" aria-label="Próximo projeto">→</button>
+              <button class="icon-button playback" type="button" data-carousel="pause" aria-controls="project-list" aria-label="Pausar movimento automático" title="Pausar movimento automático">Ⅱ</button>
+            </div>
           </div>
-
-          <div class="stack-grid reveal">
-            <div class="stack-item"><img src="https://cdn.simpleicons.org/claude/D97757" alt="" width="42" height="42"><span>Claude Code</span></div>
-            <div class="stack-item"><img src="https://cdn.simpleicons.org/openai/FFFFFF" alt="" width="42" height="42"><span>Codex</span></div>
-            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="" width="42" height="42"><span>Python</span></div>
-            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="" width="42" height="42"><span>JavaScript</span></div>
-            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="" width="42" height="42"><span>HTML</span></div>
-            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="" width="42" height="42"><span>CSS</span></div>
-            <div class="stack-item"><img src="https://cdn.simpleicons.org/n8n/EA4B71" alt="" width="42" height="42"><span>n8n</span></div>
-            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" alt="" width="42" height="42"><span>Supabase</span></div>
-            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="" width="42" height="42"><span>PostgreSQL</span></div>
-            <div class="stack-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="" width="42" height="42"><span>GitHub</span></div>
+          <div class="project-rail" aria-label="Faixa de projetos" tabindex="0">
+            <ul class="project-list" id="project-list"></ul>
           </div>
+          <p class="section-note">As prévias identificadas como demonstração foram recriadas com dados fictícios.</p>
+          <noscript><p>Ative o JavaScript para explorar os projetos e abrir os estudos de caso.</p></noscript>
         </div>
       </section>
 
-      <section class="contact-section" id="contato">
-        <div class="container contact-layout reveal">
+      <section class="section" id="stack" aria-labelledby="stack-title">
+        <div class="container">
+          <div class="section-heading"><div><p class="eyebrow">Tecnologias</p><h2 id="stack-title">Ferramentas que uso</h2></div></div>
+          <div class="stack-grid"></div>
+          <noscript><p>Ative o JavaScript para visualizar a lista de ferramentas.</p></noscript>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="contato" aria-labelledby="contact-title">
+        <div class="container contact-layout">
           <div>
-            <span class="section-label">Contato</span>
-            <h2>Quer conversar sobre projetos, IA ou automação?</h2>
+            <p class="eyebrow">Contato</p>
+            <h2 id="contact-title">Vamos transformar ideias em soluções?</h2>
+            <p>Estou aberto a oportunidades, colaborações e conversas sobre IA, automação, MarTech e inovação aplicada aos negócios.</p>
           </div>
-          <div class="contact-copy">
-            <p>Estou compartilhando minha evolução e sempre aberto a trocar experiências, ideias e oportunidades.</p>
-            <div class="contact-links">
-              <a href="mailto:luizotaviottr@gmail.com">luizotaviottr@gmail.com <span aria-hidden="true">↗</span></a>
-              <a href="https://www.linkedin.com/in/luizotavioadm" target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
+          <ul class="contact-links">
+            <li><a data-profile="linkedin" href="https://www.linkedin.com/in/luizotavioadm/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="mailto:luizotaviottr@gmail.com">luizotaviottr@gmail.com</a></li>
+            <li><a data-profile="github" href="https://github.com/LuizOtt" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="https://www.tiktok.com/@luizotavio.tech" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+          </ul>
         </div>
       </section>
     </main>
+    <footer class="footer"><div class="container footer-content"><span>© <span id="year">2026</span> Luiz Otávio</span><a href="#inicio">Voltar ao topo ↑</a></div></footer>
 
-    <footer class="footer">
-      <div class="container footer-content">
-        <span>© <span id="year">2026</span> Luiz Otávio</span>
-        <span>IA aplicada · Automação · MarTech</span>
-      </div>
-    </footer>
+    <dialog class="case-dialog" aria-labelledby="case-title">
+      <form method="dialog" class="dialog-bar"><button class="icon-button" type="submit" aria-label="Fechar detalhes">×</button></form>
+      <div class="case-content"></div>
+    </dialog>
   </body>
 </html>

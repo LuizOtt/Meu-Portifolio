@@ -1,270 +1,422 @@
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+'use strict';
 
-const toggle = document.querySelector('.nav-toggle');
-const links = document.querySelector('.nav-links');
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+const smallScreen = matchMedia('(max-width: 660px)');
 
-toggle?.addEventListener('click', () => {
-  const open = toggle.getAttribute('aria-expanded') === 'true';
-  toggle.setAttribute('aria-expanded', String(!open));
-  links?.classList.toggle('is-open', !open);
-});
-
-links?.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    toggle?.setAttribute('aria-expanded', 'false');
-    links.classList.remove('is-open');
-  });
-});
-
-document.getElementById('year').textContent = String(new Date().getFullYear());
-
-const cursorGlow = document.querySelector('.cursor-glow');
-const supportsPointerGlow = window.matchMedia('(pointer: fine)').matches && !prefersReducedMotion;
-
-if (cursorGlow && supportsPointerGlow) {
-  window.addEventListener('pointermove', (event) => {
-    cursorGlow.style.left = `${event.clientX}px`;
-    cursorGlow.style.top = `${event.clientY}px`;
-    cursorGlow.classList.add('is-visible');
-  }, { passive: true });
-
-  document.addEventListener('mouseleave', () => cursorGlow.classList.remove('is-visible'));
+function element(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text) node.textContent = text;
+  return node;
 }
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      revealObserver.unobserve(entry.target);
-    }
+function icon(name) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  const use = document.createElementNS(ns, 'use');
+  svg.setAttribute('class', 'icon');
+  svg.setAttribute('aria-hidden', 'true');
+  use.setAttribute('href', 'assets/icons.svg#' + name);
+  svg.append(use);
+  return svg;
+}
+
+$('#year').textContent = new Date().getFullYear();
+const menu = $('.nav-toggle');
+menu.hidden = false;
+const setMenu = (open) => menu.setAttribute('aria-expanded', String(open));
+menu.addEventListener('click', () => setMenu(menu.getAttribute('aria-expanded') === 'false'));
+const navLinks = $$('.nav-links a');
+navLinks.forEach((link) => link.addEventListener('click', () => {
+  setMenu(false);
+  if (smallScreen.matches) $(link.hash).focus({ preventScroll: true });
+}));
+$('.nav').addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
+    setMenu(false);
+    menu.focus();
+  }
+});
+$$('main section').forEach((section) => section.tabIndex = -1);
+let navigationFrame;
+function updateNavigation() {
+  navigationFrame = null;
+  const probe = window.innerHeight * .32;
+  let active = '#inicio';
+  for (const section of $$('main section')) {
+    if (section.getBoundingClientRect().top <= probe) active = '#' + section.id;
+  }
+  if (window.scrollY > 0 && window.scrollY + innerHeight >= document.documentElement.scrollHeight - 2) active = '#contato';
+  for (const link of navLinks) {
+    if (link.hash === active) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  }
+}
+addEventListener('scroll', () => {
+  if (navigationFrame == null) navigationFrame = requestAnimationFrame(updateNavigation);
+}, { passive: true });
+updateNavigation();
+
+for (const link of $$('[data-profile]')) {
+  const heroLink = link.cloneNode(true);
+  heroLink.removeAttribute('data-profile');
+  heroLink.className = 'button';
+  heroLink.prepend(icon(link.dataset.profile));
+  $('.hero-actions').append(heroLink);
+}
+
+const glow = $('.cursor-glow');
+let glowFrame;
+let point;
+addEventListener('pointermove', (event) => {
+  if (!finePointer.matches || reduced.matches || event.pointerType === 'touch') return;
+  point = [event.clientX, event.clientY];
+  if (glowFrame != null) return;
+  glowFrame = requestAnimationFrame(() => {
+    glowFrame = null;
+    glow.style.setProperty('--glow-x', point[0] + 'px');
+    glow.style.setProperty('--glow-y', point[1] + 'px');
+    glow.classList.add('is-visible');
   });
-}, { threshold: 0.1 });
+}, { passive: true });
+document.documentElement.addEventListener('pointerleave', () => {
+  cancelAnimationFrame(glowFrame);
+  glowFrame = null;
+  glow.classList.remove('is-visible');
+});
 
-document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+function setupBadge() {
+  const control = $('.badge-control');
+  const pivot = $('.badge-pivot');
+  const limit = (n) => Math.max(-9, Math.min(9, n));
+  let pointer, startX, startAngle, angle = 0, speed = 0, frame, previous;
+  let dragEnded = false;
+  const draw = () => pivot.style.setProperty('--tilt', angle.toFixed(2) + 'deg');
 
-const sections = [...document.querySelectorAll('main section[id]')];
-const navAnchors = [...document.querySelectorAll('.nav-links a')];
+  function settle(now) {
+    const dt = previous ? Math.min((now - previous) / 1000, .025) : 1 / 60;
+    previous = now;
+    speed += (-90 * angle - 12 * speed) * dt;
+    angle = limit(angle + speed * dt);
+    if (Math.abs(angle) < .04 && Math.abs(speed) < .35) {
+      angle = speed = 0;
+      frame = previous = null;
+    } else {
+      frame = requestAnimationFrame(settle);
+    }
+    draw();
+  }
 
-const navObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    navAnchors.forEach((anchor) => {
-      anchor.classList.toggle('is-active', anchor.getAttribute('href') === `#${entry.target.id}`);
+  function stop() {
+    cancelAnimationFrame(frame);
+    frame = previous = null;
+  }
+  function reset() {
+    stop();
+    pointer = null;
+    control.hidden = !finePointer.matches || reduced.matches || smallScreen.matches;
+    angle = speed = 0;
+    draw();
+  }
+  for (const query of [finePointer, reduced, smallScreen]) query.addEventListener('change', reset);
+  reset();
+
+  control.addEventListener('pointerdown', (event) => {
+    if (!event.isPrimary || event.button !== 0) return;
+    stop();
+    pointer = event.pointerId;
+    startX = event.clientX;
+    startAngle = angle;
+    dragEnded = false;
+    control.setPointerCapture(pointer);
+  });
+  control.addEventListener('pointermove', (event) => {
+    if (event.pointerId !== pointer) return;
+    const dx = event.clientX - startX;
+    if (Math.abs(dx) > 4) dragEnded = true;
+    angle = limit(startAngle - dx * .105);
+    draw();
+  });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+    control.addEventListener(type, (event) => {
+      if (event.pointerId !== pointer) return;
+      pointer = null;
+      if (dragEnded) frame = requestAnimationFrame(settle);
     });
+  }
+  control.addEventListener('click', (event) => {
+    if (dragEnded && event.detail) return;
+    stop();
+    speed = 45;
+    frame = requestAnimationFrame(settle);
   });
-}, { rootMargin: '-35% 0px -55%', threshold: 0 });
+}
+setupBadge();
 
-sections.forEach((section) => navObserver.observe(section));
+const projects = typeof portfolioProjects === 'undefined' ? [] : portfolioProjects;
+const tools = typeof portfolioTools === 'undefined' ? [] : portfolioTools;
 
-const badgeStage = document.getElementById('badge-stage');
-const badge = document.getElementById('draggable-badge');
-const strapLeft = document.querySelector('.badge-strap-left');
-const strapRight = document.querySelector('.badge-strap-right');
+function tags(items) {
+  const list = element('ul', 'tags');
+  list.setAttribute('aria-label', 'Tecnologias e recursos');
+  list.append(...items.map((item) => element('li', '', item)));
+  return list;
+}
 
-if (badgeStage && badge && strapLeft && strapRight) {
-  const motion = {
-    x: 0,
-    y: 0,
-    vx: 0,
-    vy: 0,
-    dragging: false,
-    pointerId: null,
-    originX: 0,
-    originY: 0,
-    startX: 0,
-    startY: 0
-  };
+function projectImage(project, eager = false) {
+  const image = element('img');
+  [image.width, image.height] = project.size;
+  image.alt = project.alt;
+  image.decoding = 'async';
+  image.loading = eager ? 'eager' : 'lazy';
+  image.addEventListener('error', () => {
+    image.replaceWith(element('span', 'empty-message', 'Imagem indisponível.'));
+  }, { once: true });
+  image.src = 'assets/projects/' + project.image;
+  return image;
+}
 
-  const clamp = (value, minimum, maximum) => Math.min(maximum, Math.max(minimum, value));
+function projectCard(project) {
+  const item = element('li');
+  const card = element('article', 'project-card');
+  const media = element('div', 'project-media');
+  media.append(projectImage(project));
+  const body = element('div', 'project-body');
+  const meta = element('div', 'project-meta');
+  meta.append(element('span', '', project.category), element('span', 'project-type', project.type));
+  const actions = element('div', 'project-actions');
+  const button = element('button', 'button', 'Ver detalhes');
+  button.type = 'button';
+  button.dataset.project = project.id;
+  button.setAttribute('aria-label', 'Ver detalhes: ' + project.title);
+  button.setAttribute('aria-haspopup', 'dialog');
+  const arrow = element('span', '', '↗');
+  arrow.setAttribute('aria-hidden', 'true');
+  button.append(arrow);
+  actions.append(button);
+  body.append(meta, element('h3', '', project.title), element('p', '', project.description), tags(project.tools), actions);
+  card.append(media, body);
+  item.append(card);
+  return item;
+}
 
-  const layout = () => {
-    const width = badgeStage.clientWidth;
-    const mobile = window.innerWidth <= 680;
-    const tablet = window.innerWidth <= 980;
-    return {
-      center: width * (mobile ? 0.5 : tablet ? 0.52 : 0.61),
-      top: mobile ? 175 : 195,
-      anchorOffset: mobile ? 71 : 83,
-      attachmentOffset: mobile ? 63 : 76,
-      anchorY: mobile ? -78 : -88
-    };
-  };
+const stack = $('.stack-grid');
+for (const group of tools) {
+  const card = element('article', 'tool-group');
+  const list = element('ul', 'tool-list');
+  for (const [name, glyph] of group.items) {
+    const item = element('li');
+    item.append(icon(glyph), element('span', '', name));
+    list.append(item);
+  }
+  card.append(element('h3', '', group.title), list);
+  stack.append(card);
+}
+if (!tools.length) stack.append(element('p', 'empty-message', 'A lista de ferramentas está indisponível.'));
 
-  const positionStrap = (strap, anchorX, anchorY, attachmentX, attachmentY) => {
-    const dx = attachmentX - anchorX;
-    const dy = attachmentY - anchorY;
-    const length = Math.hypot(dx, dy);
-    const angle = Math.atan2(dy, dx) * 180 / Math.PI - 90;
+function setupProjects() {
+  const rail = $('.project-rail');
+  const list = $('.project-list');
+  const controls = $('.carousel-controls');
+  const originals = projects.map(projectCard);
+  if (!originals.length) {
+    rail.replaceWith(element('p', 'empty-message', 'Os projetos estão indisponíveis no momento.'));
+    return;
+  }
+  list.append(...originals);
+  const count = originals.length;
+  controls.hidden = count < 2;
+  const pauseButton = $('[data-carousel="pause"]');
+  const dialog = $('.case-dialog');
+  let openingButton;
+  let copies = [];
+  let width = 0, cycle = 0, base = 0, step = 0;
+  let hovered = false, focused = false, visible = false, paused = false;
+  let frame = null, lastTime = 0, scrollValue = 0, manualUntil = 0;
+  let drag, suppressClick = false;
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-    strap.style.left = `${anchorX}px`;
-    strap.style.top = `${anchorY}px`;
-    strap.style.height = `${length}px`;
-    strap.style.transform = `translateX(-50%) rotate(${angle}deg)`;
-  };
+  function replica(project) {
+    const item = projectCard(project);
+    item.setAttribute('aria-hidden', 'true');
+    $('button', item).tabIndex = -1;
+    return item;
+  }
 
-  const renderBadge = (time = 0) => {
-    const dimensions = layout();
-    const resting = !motion.dragging && Math.abs(motion.x) < .2 && Math.abs(motion.vx) < .2;
-    const idleX = resting && !prefersReducedMotion ? Math.sin(time * .00105) * 2.2 : 0;
-    const idleAngle = resting && !prefersReducedMotion ? Math.sin(time * .00105) * .65 : 0;
-    const displayX = motion.x + idleX;
-    const tilt = clamp(motion.vx * .45 + motion.x * .025 + idleAngle, -7, 7);
-
-    badge.style.transform = `translateX(-50%) translate3d(${displayX}px, ${motion.y}px, 0) rotate(${tilt}deg)`;
-
-    const cardCenter = dimensions.center + displayX;
-    const attachmentY = dimensions.top + motion.y + 5;
-    positionStrap(
-      strapLeft,
-      dimensions.center - dimensions.anchorOffset,
-      dimensions.anchorY,
-      cardCenter - dimensions.attachmentOffset,
-      attachmentY
-    );
-    positionStrap(
-      strapRight,
-      dimensions.center + dimensions.anchorOffset,
-      dimensions.anchorY,
-      cardCenter + dimensions.attachmentOffset,
-      attachmentY
-    );
-  };
-
-  const animateBadge = (time) => {
-    if (!motion.dragging && !prefersReducedMotion) {
-      motion.vx += -motion.x * .045;
-      motion.vy += -motion.y * .055;
-      motion.vx *= .9;
-      motion.vy *= .87;
-      motion.x += motion.vx;
-      motion.y += motion.vy;
-
-      if (Math.abs(motion.x) < .02 && Math.abs(motion.vx) < .02) {
-        motion.x = 0;
-        motion.vx = 0;
-      }
-      if (Math.abs(motion.y) < .02 && Math.abs(motion.vy) < .02) {
-        motion.y = 0;
-        motion.vy = 0;
-      }
+  function measure() {
+    const logicalPosition = step ? (rail.scrollLeft - base) / step : 0;
+    const loop = count > 3 && !reduced.matches;
+    if (loop && !copies.length) {
+      const before = projects.map(replica);
+      const after = projects.map(replica);
+      list.prepend(...before);
+      list.append(...after);
+      copies = [...before, ...after];
+    } else if (!loop && copies.length) {
+      copies.forEach((node) => node.remove());
+      copies = [];
     }
+    const left = (node) => node.getBoundingClientRect().left;
+    width = rail.clientWidth;
+    step = count > 1 ? left(originals[1]) - left(originals[0]) : 0;
+    base = left(originals[0]) - left(list);
+    cycle = copies.length ? left(copies[count]) - left(originals[0]) : 0;
+    const position = loop ? ((logicalPosition % count) + count) % count : clamp(logicalPosition, 0, count - 1);
+    rail.scrollLeft = base + position * step;
+    scrollValue = rail.scrollLeft;
+    pauseButton.hidden = !cycle;
+    sync();
+  }
 
-    renderBadge(time);
-    window.requestAnimationFrame(animateBadge);
-  };
+  function canPlay() {
+    return cycle > 0 && !reduced.matches && !paused && !hovered && !focused && !drag && visible && !dialog.open && !document.hidden;
+  }
 
-  badge.addEventListener('pointerdown', (event) => {
-    motion.dragging = true;
-    motion.pointerId = event.pointerId;
-    motion.startX = event.clientX;
-    motion.startY = event.clientY;
-    motion.originX = motion.x;
-    motion.originY = motion.y;
-    motion.vx = 0;
-    motion.vy = 0;
-    badge.setPointerCapture(event.pointerId);
+  function sync() {
+    if (canPlay()) {
+      if (frame == null) frame = requestAnimationFrame(tick);
+    } else if (frame != null) {
+      cancelAnimationFrame(frame);
+      frame = null;
+      lastTime = 0;
+    }
+  }
+
+  function wrap(value) {
+    return base + (((value - base) % cycle) + cycle) % cycle;
+  }
+
+  function tick(time) {
+    frame = null;
+    if (!canPlay()) return;
+    const elapsed = lastTime ? Math.min(time - lastTime, 42) : 0;
+    lastTime = time;
+    if (time > manualUntil) {
+      if (Math.abs(rail.scrollLeft - scrollValue) > 1) scrollValue = rail.scrollLeft;
+      scrollValue = wrap(scrollValue + elapsed * .019);
+      rail.scrollLeft = scrollValue;
+    }
+    sync();
+  }
+
+  function go(delta) {
+    if (!step) return;
+    let next = base + (Math.round((rail.scrollLeft - base) / step) + delta) * step;
+    if (cycle && (next < 0 || next > rail.scrollWidth - width)) {
+      rail.scrollLeft = wrap(rail.scrollLeft);
+      next = rail.scrollLeft + delta * step;
+    }
+    manualUntil = performance.now() + 3500;
+    rail.scrollTo({ left: next, behavior: reduced.matches ? 'instant' : 'smooth' });
+  }
+
+  $('[data-carousel="previous"]').addEventListener('click', () => go(-1));
+  $('[data-carousel="next"]').addEventListener('click', () => go(1));
+  pauseButton.addEventListener('click', () => {
+    paused = !paused;
+    const label = paused ? 'Retomar movimento automático' : 'Pausar movimento automático';
+    pauseButton.textContent = paused ? '▶' : 'Ⅱ';
+    pauseButton.title = label;
+    pauseButton.setAttribute('aria-label', label);
+    sync();
   });
-
-  badge.addEventListener('pointermove', (event) => {
-    if (!motion.dragging || event.pointerId !== motion.pointerId) return;
-    const previousX = motion.x;
-    const previousY = motion.y;
-    motion.x = clamp(motion.originX + event.clientX - motion.startX, -100, 100);
-    motion.y = clamp(motion.originY + event.clientY - motion.startY, -65, 85);
-    motion.vx = motion.x - previousX;
-    motion.vy = motion.y - previousY;
-  });
-
-  const releaseBadge = (event) => {
-    if (!motion.dragging || (event && event.pointerId !== motion.pointerId)) return;
-    motion.dragging = false;
-    if (event && badge.hasPointerCapture(event.pointerId)) badge.releasePointerCapture(event.pointerId);
-    motion.pointerId = null;
-  };
-
-  badge.addEventListener('pointerup', releaseBadge);
-  badge.addEventListener('pointercancel', releaseBadge);
-  badge.addEventListener('lostpointercapture', () => {
-    motion.dragging = false;
-    motion.pointerId = null;
-  });
-
-  badge.addEventListener('keydown', (event) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
+  rail.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
     event.preventDefault();
-    motion.vx = motion.vx || 7;
-    motion.vy = -2;
+    go(event.key === 'ArrowLeft' ? -1 : 1);
   });
-
-  window.addEventListener('resize', () => renderBadge(performance.now()), { passive: true });
-  window.requestAnimationFrame(animateBadge);
-}
-
-const carousel = document.querySelector('.project-carousel');
-const track = document.querySelector('.project-track');
-const slides = [...document.querySelectorAll('.project-slide')];
-const dots = [...document.querySelectorAll('.carousel-dot')];
-const previousButton = document.querySelector('.carousel-prev');
-const nextButton = document.querySelector('.carousel-next');
-
-if (carousel && track && slides.length) {
-  let activeIndex = 0;
-  let autoplay = null;
-  let touchStartX = 0;
-
-  const showSlide = (index) => {
-    activeIndex = (index + slides.length) % slides.length;
-    track.style.transform = `translateX(-${activeIndex * 100}%)`;
-    dots.forEach((dot, dotIndex) => {
-      const selected = dotIndex === activeIndex;
-      dot.classList.toggle('is-active', selected);
-      dot.setAttribute('aria-selected', String(selected));
+  for (const node of [rail, controls]) {
+    node.addEventListener('pointerenter', (event) => {
+      if (event.pointerType !== 'touch') { hovered = true; sync(); }
     });
-  };
-
-  const stopAutoplay = () => {
-    if (autoplay) window.clearInterval(autoplay);
-    autoplay = null;
-  };
-
-  const startAutoplay = () => {
-    stopAutoplay();
-    if (prefersReducedMotion) return;
-    autoplay = window.setInterval(() => showSlide(activeIndex + 1), 5200);
-  };
-
-  previousButton?.addEventListener('click', () => {
-    showSlide(activeIndex - 1);
-    startAutoplay();
-  });
-  nextButton?.addEventListener('click', () => {
-    showSlide(activeIndex + 1);
-    startAutoplay();
-  });
-  dots.forEach((dot, index) => dot.addEventListener('click', () => {
-    showSlide(index);
-    startAutoplay();
-  }));
-
-  carousel.addEventListener('mouseenter', stopAutoplay);
-  carousel.addEventListener('mouseleave', startAutoplay);
-  carousel.addEventListener('focusin', stopAutoplay);
-  carousel.addEventListener('focusout', startAutoplay);
-  carousel.addEventListener('touchstart', (event) => {
-    touchStartX = event.changedTouches[0].clientX;
-    stopAutoplay();
+    node.addEventListener('pointerleave', () => { hovered = false; sync(); });
+    node.addEventListener('focusin', () => { focused = true; sync(); });
+    node.addEventListener('focusout', (event) => {
+      focused = rail.contains(event.relatedTarget) || controls.contains(event.relatedTarget);
+      sync();
+    });
+  }
+  rail.addEventListener('wheel', (event) => {
+    if (event.deltaX || event.shiftKey) manualUntil = performance.now() + 3500;
   }, { passive: true });
-  carousel.addEventListener('touchend', (event) => {
-    const distance = event.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(distance) > 45) showSlide(activeIndex + (distance < 0 ? 1 : -1));
-    startAutoplay();
-  }, { passive: true });
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopAutoplay();
-    else startAutoplay();
+  rail.addEventListener('dragstart', (event) => event.preventDefault());
+  rail.addEventListener('pointerdown', (event) => {
+    if (!event.isPrimary || event.button !== 0 || event.clientY >= rail.getBoundingClientRect().top + rail.clientHeight) return;
+    manualUntil = performance.now() + 3500;
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, start: rail.scrollLeft, moving: false };
+    sync();
   });
+  rail.addEventListener('pointermove', (event) => {
+    if (!drag || drag.id !== event.pointerId) return;
+    const dx = event.clientX - drag.x;
+    if (!drag.moving) {
+      if (Math.abs(dx) < 7 || Math.abs(dx) < Math.abs(event.clientY - drag.y)) return;
+      drag.moving = true;
+      rail.setPointerCapture(event.pointerId);
+      rail.classList.add('is-dragging');
+    }
+    rail.scrollLeft = drag.start - dx;
+  });
+  function endDrag(event) {
+    if (!drag || drag.id !== event.pointerId) return;
+    suppressClick = drag.moving;
+    drag = null;
+    setTimeout(() => suppressClick = false, 0);
+    rail.classList.remove('is-dragging');
+    scrollValue = rail.scrollLeft;
+    manualUntil = performance.now() + 3500;
+    sync();
+  }
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) window.addEventListener(type, endDrag);
 
-  showSlide(0);
-  startAutoplay();
+  rail.addEventListener('click', (event) => {
+    if (suppressClick) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    const trigger = event.target.closest('[data-project]');
+    const project = projects.find((item) => item.id === trigger?.dataset.project);
+    if (!project) return;
+    openingButton = trigger;
+    const content = $('.case-content', dialog);
+    const title = element('h2', '', project.title);
+    title.id = 'case-title';
+    const preview = element('figure');
+    preview.append(projectImage(project, true), element('figcaption', '', project.type === 'Demonstração' ? 'Interface recriada com dados fictícios.' : project.id === 'b2b' ? 'Imagem ilustrativa original, sem dados de contatos.' : 'Captura do site público.'));
+    const details = element('dl');
+    for (const [label, value] of [
+      ['Contexto e problema', project.context], ['Objetivo', project.goal],
+      ['Minha participação', project.role], ['Tecnologias e recursos', project.tools.join(' · ')],
+      ['Como funciona', project.flow], ['Resultado ou estágio atual', project.result],
+      ['Aprendizados e próximos passos', project.next]
+    ]) {
+      const row = element('div');
+      row.append(element('dt', '', label), element('dd', '', value));
+      details.append(row);
+    }
+    content.replaceChildren(element('p', 'eyebrow', project.category + ' · ' + project.type), title, preview, details);
+    if (project.url) {
+      const link = element('a', 'button button-primary', 'Visitar site público ↗');
+      Object.assign(link, { href: project.url, target: '_blank', rel: 'noopener noreferrer' });
+      content.append(link);
+    }
+    dialog.scrollTop = 0;
+    dialog.showModal();
+    sync();
+  }, { capture: true });
+  dialog.addEventListener('close', () => {
+    const restore = openingButton?.tabIndex === 0 ? openingButton : rail;
+    restore.focus({ preventScroll: true });
+    sync();
+  });
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { threshold: .15 }).observe(rail);
+  new ResizeObserver(() => { if (rail.clientWidth !== width) measure(); }).observe(rail);
+  document.addEventListener('visibilitychange', sync);
+  reduced.addEventListener('change', measure);
+  measure();
 }
+setupProjects();

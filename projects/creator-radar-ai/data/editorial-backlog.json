@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-09",
+  "status_legend": {
+    "triage": "Candidato ainda não escolhido",
+    "verify": "Precisa de atualização factual ou teste",
+    "ready_for_script": "Evidências e demonstração aprovadas",
+    "scripted": "Roteiro em revisão",
+    "approved": "Aprovado para gravar"
+  },
+  "items": [
+    {
+      "idea_id": "video-kb-001",
+      "candidate_id": "kb-seguranca-instrucoes",
+      "origin": "ai-knowledge-base",
+      "working_title": "Um arquivo de texto pode dar ordens ao seu agente de IA?",
+      "pillar": "noticias",
+      "audience": "iniciante",
+      "format": "noticia_explicada",
+      "hook_draft": "Antes de abrir um agente de IA em qualquer pasta, existe um arquivo que você deveria procurar.",
+      "demonstration_plan": "Mostrar uma árvore de pastas fictícia e um AGENTS.md benigno, sem executar código nem reproduzir ataque.",
+      "status": "verify",
+      "priority": 1,
+      "required_checks": [
+        "Revalidar documentação atual de Codex e Claude Code",
+        "Distinguir descoberta da pesquisa de comprovação independente",
+        "Não exibir payload, pacote ou procedimento ofensivo"
+      ]
+    },
+    {
+      "idea_id": "video-kb-002",
+      "candidate_id": "kb-docker-empacotamento",
+      "origin": "ai-knowledge-base",
+      "working_title": "O tubarãozinho não transforma seu projeto em um arquivo .exe",
+      "pillar": "dicas",
+      "audience": "iniciante",
+      "format": "explicacao_com_demo",
+      "hook_draft": "Muita gente vê o ícone do Docker e acha que ele faz o programa rodar em qualquer computador. Não é bem assim.",
+      "demonstration_plan": "Subir uma aplicação mínima em contêiner e mostrar, visualmente, imagem, contêiner, porta e dependência do runtime.",
+      "status": "verify",
+      "priority": 2,
+      "required_checks": [
+        "Executar build e run em projeto descartável",
+        "Confirmar que nenhuma credencial entrou na imagem",
+        "Explicar quando instalador nativo ou web app é mais adequado"
+      ]
+    },
+    {
+      "idea_id": "video-kb-003",
+      "candidate_id": "kb-skills-curadoria",
+      "origin": "ai-knowledge-base",
+      "working_title": "Antes de instalar uma Skill de IA, confira estas quatro coisas",
+      "pillar": "dicas",
+      "audience": "intermediario",
+      "format": "lista",
+      "hook_draft": "Uma Skill pode ajudar seu agente — ou pedir acesso demais sem você perceber.",
+      "demonstration_plan": "Abrir um exemplo público e revisar origem, ferramentas, scripts e permissões sem instalar.",
+      "status": "verify",
+      "priority": 3,
+      "required_checks": [
+        "Escolher exemplo atual e público",
+        "Ler a revisão exata do SKILL.md",
+        "Não afirmar que auditoria estática garante segurança"
+      ]
+    },
+    {
+      "idea_id": "video-kb-004",
+      "candidate_id": "kb-ai-arbitrage",
+      "origin": "ai-knowledge-base",
+      "working_title": "O cliente não deveria pagar pelo seu prompt",
+      "pillar": "carreira",
+      "audience": "iniciante",
+      "format": "opiniao",
+      "hook_draft": "Se o único valor do seu serviço é um prompt, o cliente pode copiar em cinco minutos.",
+      "demonstration_plan": "Comparar prompt bruto com uma entrega que inclui diagnóstico, dados, revisão, integração e medição.",
+      "status": "verify",
+      "priority": 4,
+      "required_checks": [
+        "Identificar claramente o que é opinião",
+        "Não prometer renda, demanda ou ROI",
+        "Usar exemplo fictício ou pessoal"
+      ]
+    },
+    {
+      "idea_id": "video-kb-005",
+      "candidate_id": "kb-claude-code-subagente",
+      "origin": "ai-knowledge-base",
+      "working_title": "Como criar um agente revisor que não pode editar seu código",
+      "pillar": "projetos",
+      "audience": "intermediario",
+      "format": "tutorial",
+      "hook_draft": "Nem todo agente precisa ter permissão para mudar seus arquivos.",
+      "demonstration_plan": "Criar em projeto descartável um subagente somente leitura e verificar se ele retorna evidências sem modificar arquivos.",
+      "status": "verify",
+      "priority": 5,
+      "required_checks": [
+        "Revalidar formato e ferramentas na versão atual",
+        "Executar teste controlado",
+        "Comparar arquivos antes e depois"
+      ]
+    },
+    {
+      "idea_id": "video-kb-006",
+      "candidate_id": "kb-n8n-idempotencia",
+      "origin": "ai-knowledge-base",
+      "working_title": "Sua automação pode criar tudo em dobro sem você perceber",
+      "pillar": "projetos",
+      "audience": "intermediario",
+      "format": "explicacao_com_demo",
+      "hook_draft": "A conexão caiu, você tentou de novo e agora existem dois registros iguais. É para isso que serve idempotência.",
+      "demonstration_plan": "Usar payload sintético em instância de teste para comparar repetição protegida e não protegida.",
+      "status": "verify",
+      "priority": 6,
+      "required_checks": [
+        "Confirmar versão estável e rotas compatíveis",
+        "Não usar credenciais ou dados reais",
+        "Explicar que o cabeçalho não protege automaticamente todos os efeitos do workflow"
+      ]
+    }
+  ]
+}
+

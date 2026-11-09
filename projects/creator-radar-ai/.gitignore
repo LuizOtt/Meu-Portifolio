@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+
+raw-media/
+renders/
+exports/
+tmp/
+*.mp4
+*.mov
+*.wav
+*.mp3
+
+*.log
+desktop.ini
+Thumbs.db
+

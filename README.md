@@ -5,6 +5,7 @@
 </p>
 
 <p align="center">
+  <a href="https://luizott.github.io/Meu-Portifolio/"><img alt="Abrir site" src="https://img.shields.io/badge/-ABRIR_SITE-7C3AED?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <a href="https://github.com/LuizOtt"><img alt="GitHub" src="https://img.shields.io/badge/-GITHUB-181717?style=for-the-badge&logo=github&logoColor=white"></a>
   <a href="https://www.linkedin.com/in/luizotavioadm"><img alt="LinkedIn" src="https://img.shields.io/badge/-LINKEDIN-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
   <a href="https://www.tiktok.com/@luizotavio.tech"><img alt="TikTok" src="https://img.shields.io/badge/-TIKTOK-000000?style=for-the-badge&logo=tiktok&logoColor=white"></a>

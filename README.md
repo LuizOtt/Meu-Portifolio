@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/LuizOtt"><img alt="GitHub" src="https://img.shields.io/badge/GITHUB-VER_PERFIL-181717?style=for-the-badge&logo=github&logoColor=white"></a>
-  <a href="https://www.linkedin.com/in/luizotavioadm"><img alt="LinkedIn" src="https://img.shields.io/badge/LINKEDIN-CONECTAR-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
-  <a href="https://www.tiktok.com/@luizotavio.tech"><img alt="TikTok" src="https://img.shields.io/badge/TIKTOK-@LUIZOTAVIO.TECH-000000?style=for-the-badge&logo=tiktok&logoColor=white"></a>
+  <a href="https://github.com/LuizOtt"><img alt="GitHub" src="https://img.shields.io/badge/-GITHUB-181717?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://www.linkedin.com/in/luizotavioadm"><img alt="LinkedIn" src="https://img.shields.io/badge/-LINKEDIN-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
+  <a href="https://www.tiktok.com/@luizotavio.tech"><img alt="TikTok" src="https://img.shields.io/badge/-TIKTOK-000000?style=for-the-badge&logo=tiktok&logoColor=white"></a>
 </p>
 
 ## Projeto em destaque
@@ -39,7 +39,7 @@ O fluxo planejado combina descoberta, verificação factual, priorização, rote
 <p align="center"><strong>n8n · Docker · Supabase · PostgreSQL · Whisper · FFmpeg · Remotion · GitHub Actions</strong></p>
 
 <p align="center">
-  <a href="projects/creator-radar-ai/README.md"><img alt="Abrir Creator Radar AI" src="https://img.shields.io/badge/ABRIR_CREATOR_RADAR_AI-DOCUMENTAÇÃO_COMPLETA-6D4AFF?style=for-the-badge&logo=radar&logoColor=white"></a>
+  <a href="projects/creator-radar-ai/README.md"><img alt="Abrir Creator Radar AI" src="https://img.shields.io/badge/-CREATOR_RADAR_AI-6D4AFF?style=for-the-badge&logo=radar&logoColor=white"></a>
 </p>
 
 ## Como trabalho
@@ -77,7 +77,7 @@ Meu-Portifolio/
 ## Contato
 
 <p align="center">
-  <a href="mailto:luizotaviottr@gmail.com"><img alt="E-mail" src="https://img.shields.io/badge/E--MAIL-FALE_COMIGO-EA4335?style=for-the-badge&logo=gmail&logoColor=white"></a>
-  <a href="https://www.instagram.com/luiz.otavio99"><img alt="Instagram" src="https://img.shields.io/badge/INSTAGRAM-@LUIZ.OTAVIO99-E4405F?style=for-the-badge&logo=instagram&logoColor=white"></a>
+  <a href="mailto:luizotaviottr@gmail.com"><img alt="E-mail" src="https://img.shields.io/badge/-E--MAIL-EA4335?style=for-the-badge&logo=gmail&logoColor=white"></a>
+  <a href="https://www.instagram.com/luiz.otavio99"><img alt="Instagram" src="https://img.shields.io/badge/-INSTAGRAM-E4405F?style=for-the-badge&logo=instagram&logoColor=white"></a>
 </p>
 

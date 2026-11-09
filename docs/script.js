@@ -16,6 +16,26 @@ links?.querySelectorAll('a').forEach((link) => {
 
 document.getElementById('year').textContent = String(new Date().getFullYear());
 
+const hero = document.querySelector('.hero');
+const supportsPointerEffect = window.matchMedia('(pointer: fine)').matches
+  && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (hero && supportsPointerEffect) {
+  hero.addEventListener('pointermove', (event) => {
+    const bounds = hero.getBoundingClientRect();
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
+
+    hero.style.setProperty('--pointer-x', `${x}px`);
+    hero.style.setProperty('--pointer-y', `${y}px`);
+    hero.classList.add('pointer-active');
+  });
+
+  hero.addEventListener('pointerleave', () => {
+    hero.classList.remove('pointer-active');
+  });
+}
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {

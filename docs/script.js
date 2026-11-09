@@ -17,8 +17,10 @@ links?.querySelectorAll('a').forEach((link) => {
 document.getElementById('year').textContent = String(new Date().getFullYear());
 
 const hero = document.querySelector('.hero');
+const badgeRig = document.querySelector('.badge-rig');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const supportsPointerEffect = window.matchMedia('(pointer: fine)').matches
-  && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  && !prefersReducedMotion;
 
 if (hero && supportsPointerEffect) {
   hero.addEventListener('pointermove', (event) => {
@@ -34,6 +36,35 @@ if (hero && supportsPointerEffect) {
   hero.addEventListener('pointerleave', () => {
     hero.classList.remove('pointer-active');
   });
+}
+
+if (badgeRig && !prefersReducedMotion) {
+  let previousScrollY = window.scrollY;
+  let scrollSwing = 0;
+  let swingFrame = null;
+
+  const settleBadge = () => {
+    scrollSwing *= 0.86;
+    badgeRig.style.setProperty('--scroll-swing', `${scrollSwing.toFixed(2)}deg`);
+
+    if (Math.abs(scrollSwing) > 0.04) {
+      swingFrame = window.requestAnimationFrame(settleBadge);
+    } else {
+      scrollSwing = 0;
+      badgeRig.style.setProperty('--scroll-swing', '0deg');
+      swingFrame = null;
+    }
+  };
+
+  window.addEventListener('scroll', () => {
+    const delta = window.scrollY - previousScrollY;
+    previousScrollY = window.scrollY;
+    scrollSwing = Math.max(-5, Math.min(5, scrollSwing + delta * 0.035));
+
+    if (!swingFrame) {
+      swingFrame = window.requestAnimationFrame(settleBadge);
+    }
+  }, { passive: true });
 }
 
 const observer = new IntersectionObserver((entries) => {

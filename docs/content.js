@@ -57,8 +57,8 @@ const portfolioProjects = [
 ];
 
 const portfolioTools = [
-  { title: 'IA e desenvolvimento', items: [['Claude Code', 'claude'], ['Codex', 'terminal'], ['Python', 'python'], ['JavaScript', 'js']] },
-  { title: 'Automação e integrações', items: [['n8n', 'nodes'], ['APIs', 'api']] },
-  { title: 'Dados e análise', items: [['PostgreSQL', 'database'], ['Power BI', 'chart']] },
-  { title: 'Web e infraestrutura', items: [['HTML', 'html'], ['CSS', 'css'], ['Supabase', 'bolt'], ['GitHub', 'github']] }
+  ['Claude Code', 'claude'], ['Codex', 'terminal'], ['Python', 'python'], ['JavaScript', 'js'],
+  ['n8n', 'nodes'], ['APIs', 'api'], ['PostgreSQL', 'database'], ['Power BI', 'chart'],
+  ['HTML', 'html'], ['CSS', 'css'], ['Supabase', 'bolt'], ['GitHub', 'github'],
+  ['Vercel', 'vercel'], ['Lovable', 'lovable']
 ];

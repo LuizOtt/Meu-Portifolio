@@ -90,9 +90,9 @@ document.documentElement.addEventListener('pointerleave', () => {
 
 function setupBadge() {
   const control = $('.badge-control');
-  const pivot = $('.badge-pivot');
+  const pivot = $('.badge-swing');
   const limit = (n) => Math.max(-9, Math.min(9, n));
-  let pointer, startX, startAngle, angle = 0, speed = 0, frame, previous;
+  let pointer, startX, startAngle, angle = 0, speed = 0, frame, previous, proximityTimer;
   let dragEnded = false;
   const draw = () => pivot.style.setProperty('--tilt', angle.toFixed(2) + 'deg');
 
@@ -116,6 +116,7 @@ function setupBadge() {
   }
   function reset() {
     stop();
+    clearTimeout(proximityTimer);
     pointer = null;
     control.hidden = !finePointer.matches || reduced.matches || smallScreen.matches;
     angle = speed = 0;
@@ -153,6 +154,19 @@ function setupBadge() {
     speed = 45;
     frame = requestAnimationFrame(settle);
   });
+  addEventListener('pointermove', (event) => {
+    if (pointer || control.hidden || event.pointerType === 'touch') return;
+    const rect = pivot.getBoundingClientRect();
+    const distanceX = event.clientX - (rect.left + rect.width / 2);
+    const distanceY = event.clientY - (rect.top + rect.height / 2);
+    const distance = Math.hypot(distanceX, distanceY);
+    if (distance > 270) return;
+    stop();
+    angle = limit(angle * .72 - (distanceX / 270) * 1.15);
+    draw();
+    clearTimeout(proximityTimer);
+    proximityTimer = setTimeout(() => { frame = requestAnimationFrame(settle); }, 90);
+  }, { passive: true });
 }
 setupBadge();
 
@@ -188,31 +202,25 @@ function projectCard(project) {
   const meta = element('div', 'project-meta');
   meta.append(element('span', '', project.category), element('span', 'project-type', project.type));
   const actions = element('div', 'project-actions');
-  const button = element('button', 'button', 'Ver detalhes');
+  const button = element('button', 'button', 'Ver projeto');
   button.type = 'button';
   button.dataset.project = project.id;
-  button.setAttribute('aria-label', 'Ver detalhes: ' + project.title);
+  button.setAttribute('aria-label', 'Ver projeto: ' + project.title);
   button.setAttribute('aria-haspopup', 'dialog');
   const arrow = element('span', '', '↗');
   arrow.setAttribute('aria-hidden', 'true');
   button.append(arrow);
   actions.append(button);
-  body.append(meta, element('h3', '', project.title), element('p', '', project.description), tags(project.tools), actions);
+  body.append(meta, element('h3', '', project.title), element('p', '', project.description), actions);
   card.append(media, body);
   item.append(card);
   return item;
 }
 
 const stack = $('.stack-grid');
-for (const group of tools) {
-  const card = element('article', 'tool-group');
-  const list = element('ul', 'tool-list');
-  for (const [name, glyph] of group.items) {
-    const item = element('li');
-    item.append(icon(glyph), element('span', '', name));
-    list.append(item);
-  }
-  card.append(element('h3', '', group.title), list);
+for (const [name, glyph] of tools) {
+  const card = element('div', 'tool-item');
+  card.append(icon(glyph), element('span', '', name));
   stack.append(card);
 }
 if (!tools.length) stack.append(element('p', 'empty-message', 'A lista de ferramentas está indisponível.'));

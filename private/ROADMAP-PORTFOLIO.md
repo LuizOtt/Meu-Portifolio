@@ -14,7 +14,7 @@
 - Site público da Rotom Soluções.
 - Sistema interno de gestão de eventos — publicar apenas como case anonimizado.
 - Painel interno de KPIs de marketing — publicar apenas com layout novo e dados fictícios.
-- Plataforma de inteligência comercial B2B — publicar apenas com empresas e contatos fictícios.
+- Plataforma de inteligência comercial B2B — usar o print original autorizado pelo autor.
 
 ## Página inicial — direção aprovada
 

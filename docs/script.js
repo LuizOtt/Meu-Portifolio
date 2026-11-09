@@ -250,13 +250,124 @@ function projectCard(project) {
   return item;
 }
 
-const stack = $('.stack-grid');
-for (const [name, glyph] of tools) {
-  const card = element('div', 'tool-item');
-  card.append(icon(glyph), element('span', '', name));
-  stack.append(card);
+function setupTools() {
+  const rail = $('.tools-rail');
+  const track = $('.tools-track');
+  if (!tools.length) {
+    rail.replaceWith(element('p', 'empty-message', 'A lista de ferramentas está indisponível.'));
+    return;
+  }
+  const makeItem = ([name, glyph], duplicate = false) => {
+    const item = element('li', 'tool-item');
+    item.append(icon(glyph), element('span', '', name));
+    if (duplicate) item.setAttribute('aria-hidden', 'true');
+    return item;
+  };
+  const originals = tools.map((tool) => makeItem(tool));
+  track.append(...originals);
+  let clones = [];
+  let groupWidth = 0;
+  let frame = null;
+  let lastTime = 0;
+  let scrollValue = 0;
+  let hovered = false;
+  let focused = false;
+  let dragging = false;
+  let manualUntil = 0;
+
+  const stop = () => {
+    if (frame != null) cancelAnimationFrame(frame);
+    frame = null;
+    lastTime = 0;
+  };
+  const canPlay = () => groupWidth > 0 && !reduced.matches && !hovered && !focused && !dragging && !document.hidden;
+  const tick = (time) => {
+    frame = null;
+    if (!canPlay()) return;
+    const elapsed = lastTime ? Math.min(time - lastTime, 42) : 0;
+    lastTime = time;
+    if (time > manualUntil) {
+      scrollValue += elapsed * .018;
+      if (scrollValue >= groupWidth) scrollValue -= groupWidth;
+      rail.scrollLeft = scrollValue;
+    }
+    if (canPlay()) frame = requestAnimationFrame(tick);
+  };
+  const sync = () => {
+    const shouldPlay = canPlay();
+    if (shouldPlay && frame == null) frame = requestAnimationFrame(tick);
+    if (!shouldPlay) stop();
+  };
+  const measure = () => {
+    if (reduced.matches) {
+      clones.forEach((node) => node.remove());
+      clones = [];
+      groupWidth = 0;
+      rail.scrollLeft = 0;
+      stop();
+      return;
+    }
+    if (!clones.length) {
+      clones = tools.map((tool) => makeItem(tool, true));
+      track.append(...clones);
+    }
+    const firstClone = clones[0];
+    groupWidth = firstClone.offsetLeft - originals[0].offsetLeft;
+    scrollValue = rail.scrollLeft % groupWidth;
+    rail.scrollLeft = scrollValue;
+    sync();
+  };
+  const pauseNow = () => {
+    hovered = true;
+    scrollValue = rail.scrollLeft;
+    stop();
+  };
+  rail.addEventListener('pointerenter', (event) => {
+    if (event.pointerType !== 'touch') pauseNow();
+  });
+  rail.addEventListener('pointerleave', () => {
+    hovered = false;
+    sync();
+  });
+  rail.addEventListener('focusin', () => {
+    focused = true;
+    pauseNow();
+  });
+  rail.addEventListener('focusout', (event) => {
+    focused = rail.contains(event.relatedTarget);
+    sync();
+  });
+  rail.addEventListener('pointerdown', () => {
+    dragging = true;
+    manualUntil = performance.now() + 1200;
+    pauseNow();
+    rail.classList.add('is-dragging');
+  });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+    rail.addEventListener(type, () => {
+      dragging = false;
+      rail.classList.remove('is-dragging');
+      scrollValue = rail.scrollLeft;
+      sync();
+    });
+  }
+  rail.addEventListener('wheel', () => {
+    manualUntil = performance.now() + 1200;
+    scrollValue = rail.scrollLeft;
+  }, { passive: true });
+  rail.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    const distance = event.key === 'ArrowLeft' ? -160 : 160;
+    rail.scrollBy({ left: distance, behavior: reduced.matches ? 'auto' : 'smooth' });
+    manualUntil = performance.now() + 1200;
+  });
+  document.addEventListener('visibilitychange', sync);
+  reduced.addEventListener('change', measure);
+  new ResizeObserver(measure).observe(rail);
+  measure();
 }
-if (!tools.length) stack.append(element('p', 'empty-message', 'A lista de ferramentas está indisponível.'));
+setupTools();
 
 function setupProjects() {
   const rail = $('.project-rail');
@@ -269,6 +380,9 @@ function setupProjects() {
   }
   list.append(...originals);
   const count = originals.length;
+  for (const image of $$('img', list)) {
+    if (!image.complete) image.addEventListener('load', () => requestAnimationFrame(measure), { once: true });
+  }
   controls.hidden = count < 2;
   const pauseButton = $('[data-carousel="pause"]');
   const dialog = $('.case-dialog');

@@ -88,6 +88,18 @@ document.documentElement.addEventListener('pointerleave', () => {
   glow.classList.remove('is-visible');
 });
 
+const heroCopy = $('.hero-copy');
+const heroTitle = $('.hero-copy h1');
+if (finePointer.matches && !reduced.matches) {
+  heroTitle.addEventListener('pointermove', (event) => {
+    const rect = heroCopy.getBoundingClientRect();
+    heroCopy.style.setProperty('--title-x', (event.clientX - rect.left) + 'px');
+    heroCopy.style.setProperty('--title-y', (event.clientY - rect.top) + 'px');
+  });
+  heroTitle.addEventListener('pointerenter', () => heroCopy.classList.add('is-title-active'));
+  heroTitle.addEventListener('pointerleave', () => heroCopy.classList.remove('is-title-active'));
+}
+
 function setupBadge() {
   const control = $('.badge-control');
   const pivot = $('.badge-swing');

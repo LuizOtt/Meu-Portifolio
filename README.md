@@ -1,10 +1,14 @@
-# Portfólio — Luiz Otávio
+<h1 align="center">Portfólio — Luiz Otávio</h1>
 
-Projetos pessoais de **inteligência artificial, automação, MarTech e produtos digitais**, construídos com foco em aprendizado prático, documentação e resultados verificáveis.
+<p align="center">
+  Projetos pessoais de <strong>inteligência artificial, automação, MarTech e produtos digitais</strong>, construídos com foco em aprendizado prático, documentação e resultados verificáveis.
+</p>
 
-[![GitHub](https://img.shields.io/badge/GitHub-LuizOtt-181717?style=flat-square&logo=github)](https://github.com/LuizOtt)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-luizotavioadm-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/luizotavioadm)
-[![TikTok](https://img.shields.io/badge/TikTok-@luizotavio.tech-000000?style=flat-square&logo=tiktok)](https://www.tiktok.com/@luizotavio.tech)
+<p align="center">
+  <a href="https://github.com/LuizOtt"><img alt="GitHub" src="https://img.shields.io/badge/GITHUB-VER_PERFIL-181717?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://www.linkedin.com/in/luizotavioadm"><img alt="LinkedIn" src="https://img.shields.io/badge/LINKEDIN-CONECTAR-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
+  <a href="https://www.tiktok.com/@luizotavio.tech"><img alt="TikTok" src="https://img.shields.io/badge/TIKTOK-@LUIZOTAVIO.TECH-000000?style=for-the-badge&logo=tiktok&logoColor=white"></a>
+</p>
 
 ## Projeto em destaque
 
@@ -20,9 +24,23 @@ O fluxo planejado combina descoberta, verificação factual, priorização, rote
 
 **Estado atual:** arquitetura e base editorial implementadas; 13 conhecimentos catalogados e seis pautas iniciais priorizadas. Radar automatizado, editor e publicação ainda estão em desenvolvimento.
 
-**Tecnologias e ferramentas previstas:** n8n Community, Docker, Supabase/Postgres ou SQLite, Whisper, FFmpeg, Remotion, modelos locais e GitHub Actions.
+### Stack planejada
 
-[Abrir o projeto e a documentação](projects/creator-radar-ai/README.md)
+<p align="center">
+  <img alt="n8n" title="n8n" height="55" width="68" src="https://cdn.simpleicons.org/n8n/EA4B71">
+  <img alt="Docker" title="Docker" height="55" width="68" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg">
+  <img alt="Supabase" title="Supabase" height="55" width="68" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg">
+  <img alt="PostgreSQL" title="PostgreSQL" height="55" width="68" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg">
+  <img alt="FFmpeg" title="FFmpeg" height="55" width="68" src="https://cdn.simpleicons.org/ffmpeg/007808">
+  <img alt="Remotion com React" title="Remotion / React" height="55" width="68" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg">
+  <img alt="GitHub Actions" title="GitHub Actions" height="55" width="68" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/githubactions/githubactions-original.svg">
+</p>
+
+<p align="center"><strong>n8n · Docker · Supabase · PostgreSQL · Whisper · FFmpeg · Remotion · GitHub Actions</strong></p>
+
+<p align="center">
+  <a href="projects/creator-radar-ai/README.md"><img alt="Abrir Creator Radar AI" src="https://img.shields.io/badge/ABRIR_CREATOR_RADAR_AI-DOCUMENTAÇÃO_COMPLETA-6D4AFF?style=for-the-badge&logo=radar&logoColor=white"></a>
+</p>
 
 ## Como trabalho
 
@@ -58,8 +76,8 @@ Meu-Portifolio/
 
 ## Contato
 
-- [LinkedIn](https://www.linkedin.com/in/luizotavioadm)
-- [GitHub](https://github.com/LuizOtt)
-- [TikTok — @luizotavio.tech](https://www.tiktok.com/@luizotavio.tech)
-- E-mail: `luizotaviottr@gmail.com`
+<p align="center">
+  <a href="mailto:luizotaviottr@gmail.com"><img alt="E-mail" src="https://img.shields.io/badge/E--MAIL-FALE_COMIGO-EA4335?style=for-the-badge&logo=gmail&logoColor=white"></a>
+  <a href="https://www.instagram.com/luiz.otavio99"><img alt="Instagram" src="https://img.shields.io/badge/INSTAGRAM-@LUIZ.OTAVIO99-E4405F?style=for-the-badge&logo=instagram&logoColor=white"></a>
+</p>
 

@@ -318,12 +318,14 @@ function setupTools() {
     sync();
   };
   const pauseNow = () => {
-    hovered = true;
     scrollValue = rail.scrollLeft;
     stop();
   };
   rail.addEventListener('pointerenter', (event) => {
-    if (event.pointerType !== 'touch') pauseNow();
+    if (event.pointerType !== 'touch') {
+      hovered = true;
+      pauseNow();
+    }
   });
   rail.addEventListener('pointerleave', () => {
     hovered = false;

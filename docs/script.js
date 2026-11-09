@@ -21,7 +21,7 @@ function icon(name) {
   svg.setAttribute('viewBox', '0 0 24 24');
   svg.setAttribute('focusable', 'false');
   svg.setAttribute('aria-hidden', 'true');
-  use.setAttribute('href', 'assets/icons.svg#' + name);
+  use.setAttribute('href', '#' + name);
   svg.append(use);
   return svg;
 }
@@ -62,14 +62,6 @@ addEventListener('scroll', () => {
 }, { passive: true });
 updateNavigation();
 
-for (const link of $$('[data-profile]')) {
-  const heroLink = link.cloneNode(true);
-  heroLink.removeAttribute('data-profile');
-  heroLink.className = 'button';
-  heroLink.prepend(icon(link.dataset.profile));
-  $('.hero-actions').append(heroLink);
-}
-
 const glow = $('.cursor-glow');
 let glowFrame;
 let point;
@@ -105,82 +97,93 @@ if (finePointer.matches && !reduced.matches) {
 function setupBadge() {
   const control = $('.badge-control');
   const pivot = $('.badge-swing');
-  const limit = (n) => Math.max(-9, Math.min(9, n));
-  let pointer, startX, startAngle, angle = 0, speed = 0, frame, previous, proximityTimer;
-  let dragEnded = false;
-  const draw = () => pivot.style.setProperty('--tilt', angle.toFixed(2) + 'deg');
-
+  const scene = $('.badge-scene');
+  const flipButton = $('.badge-flip');
+  const limit = (value, min, max) => Math.min(max, Math.max(min, value));
+  let pointer = null, startX = 0, startY = 0, start = {}, last = {};
+  let x = 0, y = 0, angle = 0, vx = 0, vy = 0, va = 0, frame = null, previous = 0, dragged = false, flipped = false;
+  const draw = () => {
+    pivot.style.setProperty('--badge-x', x.toFixed(1) + 'px');
+    pivot.style.setProperty('--badge-y', y.toFixed(1) + 'px');
+    pivot.style.setProperty('--tilt', angle.toFixed(2) + 'deg');
+  };
+  const stop = () => { cancelAnimationFrame(frame); frame = null; previous = 0; };
+  const setFlip = (next) => {
+    flipped = next;
+    scene.classList.toggle('is-flipped', flipped);
+    flipButton.setAttribute('aria-pressed', String(flipped));
+    flipButton.textContent = flipped ? 'Ver frente' : 'Virar crachá';
+  };
   function settle(now) {
-    const dt = previous ? Math.min((now - previous) / 1000, .025) : 1 / 60;
+    const dt = previous ? Math.min((now - previous) / 1000, .03) : 1 / 60;
     previous = now;
-    speed += (-90 * angle - 12 * speed) * dt;
-    angle = limit(angle + speed * dt);
-    if (Math.abs(angle) < .04 && Math.abs(speed) < .35) {
-      angle = speed = 0;
-      frame = previous = null;
-    } else {
-      frame = requestAnimationFrame(settle);
-    }
+    vx += (-16 * x - 6.5 * vx) * dt;
+    vy += (-13 * y - 6.2 * vy) * dt;
+    va += (-66 * angle - 9 * va) * dt;
+    x = limit(x + vx * dt, -42, 42);
+    y = limit(y + vy * dt, -16, 28);
+    angle = limit(angle + va * dt, -12, 12);
     draw();
-  }
-
-  function stop() {
-    cancelAnimationFrame(frame);
-    frame = previous = null;
+    if (Math.max(Math.abs(x), Math.abs(y), Math.abs(angle), Math.abs(vx), Math.abs(vy), Math.abs(va)) < .08) {
+      x = y = angle = vx = vy = va = 0;
+      draw();
+      stop();
+      return;
+    }
+    frame = requestAnimationFrame(settle);
   }
   function reset() {
     stop();
-    clearTimeout(proximityTimer);
     pointer = null;
-    control.hidden = !finePointer.matches || reduced.matches || smallScreen.matches;
-    angle = speed = 0;
+    x = y = angle = vx = vy = va = 0;
     draw();
   }
-  for (const query of [finePointer, reduced, smallScreen]) query.addEventListener('change', reset);
+  for (const query of [reduced, smallScreen]) query.addEventListener('change', reset);
+  control.hidden = false;
   reset();
-
+  const toggle = () => setFlip(!flipped);
+  flipButton.addEventListener('click', (event) => { event.stopPropagation(); toggle(); });
+  for (const link of $$('a', scene)) link.addEventListener('click', (event) => event.stopPropagation());
   control.addEventListener('pointerdown', (event) => {
-    if (!event.isPrimary || event.button !== 0) return;
+    if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
     stop();
     pointer = event.pointerId;
     startX = event.clientX;
-    startAngle = angle;
-    dragEnded = false;
+    startY = event.clientY;
+    start = { x, y, angle };
+    last = { x: event.clientX, y: event.clientY, time: performance.now() };
+    dragged = false;
     control.setPointerCapture(pointer);
   });
   control.addEventListener('pointermove', (event) => {
     if (event.pointerId !== pointer) return;
     const dx = event.clientX - startX;
-    if (Math.abs(dx) > 4) dragEnded = true;
-    angle = limit(startAngle - dx * .105);
+    const dy = event.clientY - startY;
+    if (Math.hypot(dx, dy) > 7) dragged = true;
+    if (!dragged) return;
+    if (Math.abs(dx) > Math.abs(dy)) event.preventDefault();
+    x = limit(start.x + dx * .34, -42, 42);
+    y = limit(start.y + dy * .16, -16, 28);
+    angle = limit(start.angle - dx * .075, -12, 12);
+    const now = performance.now();
+    const dt = Math.max((now - last.time) / 1000, .016);
+    vx = limit((event.clientX - last.x) * .34 / dt, -260, 260);
+    vy = limit((event.clientY - last.y) * .16 / dt, -160, 160);
+    va = limit(-(event.clientX - last.x) * .075 / dt, -150, 150);
+    last = { x: event.clientX, y: event.clientY, time: now };
     draw();
-  });
+  }, { passive: false });
   for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
     control.addEventListener(type, (event) => {
       if (event.pointerId !== pointer) return;
       pointer = null;
-      if (dragEnded) frame = requestAnimationFrame(settle);
+      if (dragged && !reduced.matches) frame = requestAnimationFrame(settle);
     });
   }
   control.addEventListener('click', (event) => {
-    if (dragEnded && event.detail) return;
-    stop();
-    speed = 45;
-    frame = requestAnimationFrame(settle);
+    if (dragged && event.detail) return;
+    toggle();
   });
-  addEventListener('pointermove', (event) => {
-    if (pointer || control.hidden || event.pointerType === 'touch') return;
-    const rect = pivot.getBoundingClientRect();
-    const distanceX = event.clientX - (rect.left + rect.width / 2);
-    const distanceY = event.clientY - (rect.top + rect.height / 2);
-    const distance = Math.hypot(distanceX, distanceY);
-    if (distance > 270) return;
-    stop();
-    angle = limit(angle * .72 - (distanceX / 270) * 1.15);
-    draw();
-    clearTimeout(proximityTimer);
-    proximityTimer = setTimeout(() => { frame = requestAnimationFrame(settle); }, 90);
-  }, { passive: true });
 }
 setupBadge();
 
@@ -373,7 +376,7 @@ function setupProjects() {
   let copies = [];
   let width = 0, cycle = 0, base = 0, step = 0;
   let hovered = false, focused = false, visible = false, paused = false;
-  let frame = null, lastTime = 0, scrollValue = 0, manualUntil = 0;
+  let frame = null, lastTime = 0, scrollValue = 0, manualUntil = performance.now() + 2200;
   let drag, suppressClick = false;
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
@@ -405,6 +408,7 @@ function setupProjects() {
     const position = loop ? ((logicalPosition % count) + count) % count : clamp(logicalPosition, 0, count - 1);
     rail.scrollLeft = base + position * step;
     scrollValue = rail.scrollLeft;
+    manualUntil = Math.max(manualUntil, performance.now() + 1200);
     pauseButton.hidden = !cycle;
     sync();
   }
@@ -525,18 +529,31 @@ function setupProjects() {
     title.id = 'case-title';
     const preview = element('figure');
     preview.append(projectImage(project, true), element('figcaption', '', project.type === 'Demonstração' ? 'Interface recriada com dados fictícios.' : project.id === 'b2b' ? 'Imagem ilustrativa original, sem dados de contatos.' : 'Captura do site público.'));
-    const details = element('dl');
-    for (const [label, value] of [
-      ['Contexto e problema', project.context], ['Objetivo', project.goal],
-      ['Minha participação', project.role], ['Tecnologias e recursos', project.tools.join(' · ')],
-      ['Como funciona', project.flow], ['Resultado ou estágio atual', project.result],
-      ['Aprendizados e próximos passos', project.next]
-    ]) {
-      const row = element('div');
-      row.append(element('dt', '', label), element('dd', '', value));
-      details.append(row);
-    }
-    content.replaceChildren(element('p', 'eyebrow', project.category + ' · ' + project.type), title, preview, details);
+    const panel = (heading, text, wide = false) => {
+      const card = element('section', 'case-panel' + (wide ? ' case-panel-wide' : ''));
+      card.append(element('h3', '', heading), element('p', '', text));
+      return card;
+    };
+    const technologies = element('section', 'case-panel case-panel-wide');
+    technologies.append(element('h3', '', 'Tecnologias e funcionamento'));
+    const techList = element('ul', 'case-tech');
+    techList.append(...project.tools.map((tool) => element('li', '', tool)));
+    technologies.append(techList, element('p', '', project.flow));
+    const details = element('div', 'case-grid');
+    details.append(
+      panel('Problema', project.context),
+      panel('Solução', project.goal),
+      panel('Minha participação', project.role),
+      panel('Resultado e próximos passos', project.result + ' ' + project.next),
+      technologies
+    );
+    content.replaceChildren(
+      element('p', 'eyebrow', project.category + ' · ' + project.type),
+      title,
+      element('p', 'case-lead', project.description),
+      preview,
+      details
+    );
     if (project.url) {
       const link = element('a', 'button button-primary', 'Visitar site público ↗');
       Object.assign(link, { href: project.url, target: '_blank', rel: 'noopener noreferrer' });
@@ -550,6 +567,9 @@ function setupProjects() {
     const restore = openingButton?.tabIndex === 0 ? openingButton : rail;
     restore.focus({ preventScroll: true });
     sync();
+  });
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
   });
   new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { threshold: .15 }).observe(rail);
   new ResizeObserver(() => { if (rail.clientWidth !== width) measure(); }).observe(rail);

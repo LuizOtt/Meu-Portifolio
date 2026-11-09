@@ -18,6 +18,8 @@ function icon(name) {
   const svg = document.createElementNS(ns, 'svg');
   const use = document.createElementNS(ns, 'use');
   svg.setAttribute('class', 'icon');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('focusable', 'false');
   svg.setAttribute('aria-hidden', 'true');
   use.setAttribute('href', 'assets/icons.svg#' + name);
   svg.append(use);
@@ -89,36 +91,15 @@ document.documentElement.addEventListener('pointerleave', () => {
 });
 
 const heroCopy = $('.hero-copy');
-const heroTitle = $('.hero-copy h1');
-if (!reduced.matches) {
-  const accessibleTitle = heroTitle.textContent.trim().replace(/\s+/g, ' ');
-  const textNodes = [];
-  const walker = document.createTreeWalker(heroTitle, NodeFilter.SHOW_TEXT);
-  while (walker.nextNode()) textNodes.push(walker.currentNode);
-  let letterIndex = 0;
-  for (const textNode of textNodes) {
-    const fragment = document.createDocumentFragment();
-    for (const character of textNode.textContent) {
-      if (/\s/.test(character)) {
-        fragment.append(character);
-        continue;
-      }
-      const letter = element('span', 'hero-letter', character);
-      letter.style.setProperty('--letter-index', letterIndex++);
-      fragment.append(letter);
-    }
-    textNode.replaceWith(fragment);
-  }
-  heroTitle.setAttribute('aria-label', accessibleTitle);
-}
+const heroTech = $('.hero-copy h1 em');
 if (finePointer.matches && !reduced.matches) {
-  heroTitle.addEventListener('pointermove', (event) => {
+  heroTech.addEventListener('pointermove', (event) => {
     const rect = heroCopy.getBoundingClientRect();
     heroCopy.style.setProperty('--title-x', (event.clientX - rect.left) + 'px');
     heroCopy.style.setProperty('--title-y', (event.clientY - rect.top) + 'px');
   });
-  heroTitle.addEventListener('pointerenter', () => heroCopy.classList.add('is-title-active'));
-  heroTitle.addEventListener('pointerleave', () => heroCopy.classList.remove('is-title-active'));
+  heroTech.addEventListener('pointerenter', () => heroCopy.classList.add('is-title-active'));
+  heroTech.addEventListener('pointerleave', () => heroCopy.classList.remove('is-title-active'));
 }
 
 function setupBadge() {

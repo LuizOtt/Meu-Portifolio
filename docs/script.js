@@ -90,6 +90,27 @@ document.documentElement.addEventListener('pointerleave', () => {
 
 const heroCopy = $('.hero-copy');
 const heroTitle = $('.hero-copy h1');
+if (!reduced.matches) {
+  const accessibleTitle = heroTitle.textContent.trim().replace(/\s+/g, ' ');
+  const textNodes = [];
+  const walker = document.createTreeWalker(heroTitle, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  let letterIndex = 0;
+  for (const textNode of textNodes) {
+    const fragment = document.createDocumentFragment();
+    for (const character of textNode.textContent) {
+      if (/\s/.test(character)) {
+        fragment.append(character);
+        continue;
+      }
+      const letter = element('span', 'hero-letter', character);
+      letter.style.setProperty('--letter-index', letterIndex++);
+      fragment.append(letter);
+    }
+    textNode.replaceWith(fragment);
+  }
+  heroTitle.setAttribute('aria-label', accessibleTitle);
+}
 if (finePointer.matches && !reduced.matches) {
   heroTitle.addEventListener('pointermove', (event) => {
     const rect = heroCopy.getBoundingClientRect();

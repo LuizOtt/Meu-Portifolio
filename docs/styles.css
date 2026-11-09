@@ -38,6 +38,12 @@ main, .footer { position: relative; }
 h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.037em; text-wrap: balance; }
 h1 { font-size: clamp(2.65rem, 5.4vw, 4.65rem); line-height: 1.02; letter-spacing: -.059em; transition: text-shadow .2s ease, color .2s ease; }
 h1 em { color: var(--accent); font-style: normal; transition: color .2s ease, text-shadow .2s ease; }
+.hero-letter { display: inline-block; animation: hero-letter-drift 4.8s ease-in-out infinite; animation-delay: calc(var(--letter-index) * -55ms); will-change: transform; }
+@keyframes hero-letter-drift {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  42% { transform: translateY(-2px) rotate(.25deg); }
+  58% { transform: translateY(-1px) rotate(-.18deg); }
+}
 h2 { font-size: clamp(2rem, 4vw, 3.25rem); }
 h3 { font-size: 1.22rem; }
 .hero { overflow: clip; border-bottom: 1px solid var(--line); }
@@ -154,4 +160,5 @@ body:has(.case-dialog[open]) { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .cursor-glow, .badge-control { display: none; }
+  .hero-letter { animation: none; }
 }

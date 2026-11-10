@@ -120,9 +120,9 @@ function setupBadge() {
     vx += (-16 * x - 6.5 * vx) * dt;
     vy += (-13 * y - 6.2 * vy) * dt;
     va += (-66 * angle - 9 * va) * dt;
-    x = limit(x + vx * dt, -42, 42);
-    y = limit(y + vy * dt, -16, 28);
-    angle = limit(angle + va * dt, -12, 12);
+    x = limit(x + vx * dt, -58, 58);
+    y = limit(y + vy * dt, -18, 36);
+    angle = limit(angle + va * dt, -15, 15);
     draw();
     if (Math.max(Math.abs(x), Math.abs(y), Math.abs(angle), Math.abs(vx), Math.abs(vy), Math.abs(va)) < .08) {
       x = y = angle = vx = vy = va = 0;
@@ -162,14 +162,14 @@ function setupBadge() {
     if (Math.hypot(dx, dy) > 7) dragged = true;
     if (!dragged) return;
     if (Math.abs(dx) > Math.abs(dy)) event.preventDefault();
-    x = limit(start.x + dx * .34, -42, 42);
-    y = limit(start.y + dy * .16, -16, 28);
-    angle = limit(start.angle - dx * .075, -12, 12);
+    x = limit(start.x + dx * .4, -58, 58);
+    y = limit(start.y + dy * .2, -18, 36);
+    angle = limit(start.angle - dx * .09, -15, 15);
     const now = performance.now();
     const dt = Math.max((now - last.time) / 1000, .016);
-    vx = limit((event.clientX - last.x) * .34 / dt, -260, 260);
-    vy = limit((event.clientY - last.y) * .16 / dt, -160, 160);
-    va = limit(-(event.clientX - last.x) * .075 / dt, -150, 150);
+    vx = limit((event.clientX - last.x) * .4 / dt, -300, 300);
+    vy = limit((event.clientY - last.y) * .2 / dt, -190, 190);
+    va = limit(-(event.clientX - last.x) * .09 / dt, -180, 180);
     last = { x: event.clientX, y: event.clientY, time: now };
     draw();
   }, { passive: false });

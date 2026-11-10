@@ -60,7 +60,7 @@ h3 { font-size: 1.22rem; }
 .icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
 .badge-stage { --badge-width: 300px; align-self: stretch; display: flex; align-items: center; justify-content: center; min-width: 0; padding: 15px 0 48px; }
 .badge-swing { display: flex; flex-direction: column; align-items: center; transform-origin: 50% 0; transform: translate(var(--badge-x, 0), var(--badge-y, 0)) rotate(var(--tilt, 0deg)); will-change: transform; }
-.lanyard { display: block; flex: none; width: 310px; height: 224px; max-width: none; overflow: visible; z-index: 2; pointer-events: none; filter: drop-shadow(0 9px 9px #0008); }
+.lanyard { display: block; flex: none; width: 310px; height: 330px; max-width: none; object-fit: contain; object-position: center top; z-index: 2; pointer-events: none; filter: drop-shadow(0 9px 9px #0008); }
 .badge-pivot { position: relative; width: min(var(--badge-width), 100%); min-height: 391px; margin-top: -5px; perspective: 1200px; }
 .badge-eyelet { position: absolute; z-index: 1; top: 0; left: calc(50% - 13px); width: 26px; height: 10px; border-radius: 5px; border: 1px solid #7e718a; background: #0b080e; }
 .badge-scene { position: relative; width: 100%; min-height: 373px; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
@@ -164,7 +164,7 @@ body:has(.case-dialog[open]) { overflow: hidden; }
   .hero-grid { grid-template-columns: 1fr; gap: 0; }
   .hero-copy { padding-block: 48px 23px; }
   .badge-stage { --badge-width: min(278px, 86vw); padding: 6px 0 37px; }
-  .lanyard { width: 250px; height: 181px; margin-top: 2px; }
+  .lanyard { width: 250px; height: 280px; margin-top: 2px; }
   .badge-pivot { min-height: 366px; }
   .badge-scene { min-height: 348px; }
   .badge-photo { width: 110px; height: 110px; }

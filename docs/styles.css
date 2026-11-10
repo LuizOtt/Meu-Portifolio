@@ -60,12 +60,12 @@ h3 { font-size: 1.22rem; }
 .icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
 .badge-stage { --badge-width: 300px; align-self: stretch; display: flex; align-items: center; justify-content: center; min-width: 0; padding: 15px 0 48px; }
 .badge-swing { display: flex; flex-direction: column; align-items: center; transform-origin: 50% 0; transform: translate(var(--badge-x, 0), var(--badge-y, 0)) rotate(var(--tilt, 0deg)); will-change: transform; }
-.lanyard { display: block; flex: none; width: 310px; height: 330px; max-width: none; object-fit: contain; object-position: center top; z-index: 2; pointer-events: none; filter: drop-shadow(0 9px 9px #0008); }
-.badge-pivot { position: relative; width: min(var(--badge-width), 100%); min-height: 391px; margin-top: -5px; perspective: 1200px; }
+.lanyard { display: block; flex: none; width: 310px; height: 330px; max-width: none; margin-bottom: -82px; object-fit: contain; object-position: center top; z-index: 4; pointer-events: none; filter: drop-shadow(0 9px 9px #0008); }
+.badge-pivot { position: relative; z-index: 3; width: min(var(--badge-width), 100%); min-height: 391px; margin-top: -5px; perspective: 1200px; }
 .badge-eyelet { position: absolute; z-index: 1; top: 0; left: calc(50% - 13px); width: 26px; height: 10px; border-radius: 5px; border: 1px solid #7e718a; background: #0b080e; }
 .badge-scene { position: relative; width: 100%; min-height: 373px; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
 .badge-scene.is-flipped { transform: rotateY(180deg); }
-.identity-badge { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 19px 18px 17px; text-align: center; background: linear-gradient(150deg, #1d1325, #09070c 58%, #12091a); border: 1px solid #8862b6; border-radius: 18px; box-shadow: 0 20px 44px #000b, 0 0 0 1px #cda7ff1c inset, inset 0 -1px #ba8fff88; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.identity-badge { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 19px 18px 17px; text-align: center; background-color: #0d0815; background-image: linear-gradient(150deg, #24153bbd, #09070ce0 58%, #170a22cf), url("assets/badge-background-v1.png"); background-position: center; background-size: cover; border: 1px solid #a469e8; border-radius: 18px; box-shadow: 0 20px 44px #000b, 0 0 0 1px #e1baff38 inset, inset 0 -1px #d6a5ff99; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .badge-back { align-items: center; justify-content: center; gap: 16px; transform: rotateY(180deg); }
 .badge-back h2 { font-size: 1.6rem; }
 .badge-label { margin: 0 0 14px; color: var(--accent); font-size: .62rem; font-weight: 780; letter-spacing: .16em; }
@@ -164,7 +164,7 @@ body:has(.case-dialog[open]) { overflow: hidden; }
   .hero-grid { grid-template-columns: 1fr; gap: 0; }
   .hero-copy { padding-block: 48px 23px; }
   .badge-stage { --badge-width: min(278px, 86vw); padding: 6px 0 37px; }
-  .lanyard { width: 250px; height: 280px; margin-top: 2px; }
+  .lanyard { width: 250px; height: 280px; margin-top: 2px; margin-bottom: -69px; }
   .badge-pivot { min-height: 366px; }
   .badge-scene { min-height: 348px; }
   .badge-photo { width: 110px; height: 110px; }
